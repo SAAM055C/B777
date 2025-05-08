@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trang chủ</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Chiếm toàn bộ chiều cao viewport */
+            width: 100vw; /* Chiếm toàn bộ chiều rộng viewport */
+        }
+        .container {
+            background-color: #fff;
+            padding: 60px; /* Tăng padding để có không gian hơn */
+            border-radius: 0; /* Loại bỏ bo tròn góc để trông "full" hơn */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 95%; /* Chiếm gần hết chiều rộng */
+            max-width: none; /* Không giới hạn chiều rộng tối đa */
+            height: 90%; /* Chiếm gần hết chiều cao */
+            max-height: none; /* Không giới hạn chiều cao tối đa */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Căn giữa nội dung bên trong theo chiều dọc */
+        }
+        h1 {
+            color: #007bff;
+            margin-bottom: 40px;
+            font-size: 3em; /* Tiêu đề lớn hơn */
+        }
+        .info {
+            margin-bottom: 50px;
+            font-size: 1.5em;
+            color: #555;
+        }
+        .start-button {
+            display: inline-block;
+            padding: 25px 50px;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-decoration: none;
+            color: #fff;
+            background-color: #28a745;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .start-button:hover {
+            background-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chào mừng đến với Bài Kiểm Tra!</h1>
+        <div class="info">
+            <p>Số lượng câu hỏi: {{ total_questions }}</p>
+            <p>Thời gian làm bài: {{ quiz_duration_minutes }} phút</p>
+        </div>
+        <p><a href="{{ url_for('quiz') }}" class="start-button">Bắt đầu Ngay</a></p>
+    </div>
+</body>
+</html>

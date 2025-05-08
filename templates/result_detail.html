@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết kết quả</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .detail-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #007bff;
+        }
+        .question {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .options {
+            margin-left: 20px;
+        }
+        .option-item {
+            margin-bottom: 10px;
+        }
+        .correct-answer-option {
+            color: green;
+            font-weight: bold;
+        }
+        .wrong-answer-option {
+            color: red;
+            font-weight: bold;
+        }
+        .user-correct-answer {
+            color: green;
+            font-style: italic;
+        }
+        .user-wrong-answer {
+            color: red;
+            font-style: italic;
+        }
+        .back-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="detail-container">
+        <h2>Chi tiết câu hỏi</h2>
+        <div class="question">{{ result.question_text }}</div>
+        <div class="options">
+            <div class="option-item {% if result.correct_answer == 'A' %}correct-answer-option{% elif result.user_answer == 'A' and not result.is_correct %}wrong-answer-option{% endif %}">
+                A: {{ result.options.a }}
+                {% if result.user_answer == 'A' and result.is_correct %} <span class="user-correct-answer">(Bạn chọn đúng)</span>
+                {% elif result.user_answer == 'A' and not result.is_correct %} <span class="user-wrong-answer">(Bạn chọn sai)</span> {% endif %}
+                {% if result.correct_answer == 'A' and not result.user_answer == 'A' %} <span class="correct-answer-option">(Đáp án đúng)</span> {% endif %}
+            </div>
+            <div class="option-item {% if result.correct_answer == 'B' %}correct-answer-option{% elif result.user_answer == 'B' and not result.is_correct %}wrong-answer-option{% endif %}">
+                B: {{ result.options.b }}
+                {% if result.user_answer == 'B' and result.is_correct %} <span class="user-correct-answer">(Bạn chọn đúng)</span>
+                {% elif result.user_answer == 'B' and not result.is_correct %} <span class="user-wrong-answer">(Bạn chọn sai)</span> {% endif %}
+                {% if result.correct_answer == 'B' and not result.user_answer == 'B' %} <span class="correct-answer-option">(Đáp án đúng)</span> {% endif %}
+            </div>
+            <div class="option-item {% if result.correct_answer == 'C' %}correct-answer-option{% elif result.user_answer == 'C' and not result.is_correct %}wrong-answer-option{% endif %}">
+                C: {{ result.options.c }}
+                {% if result.user_answer == 'C' and result.is_correct %} <span class="user-correct-answer">(Bạn chọn đúng)</span>
+                {% elif result.user_answer == 'C' and not result.is_correct %} <span class="user-wrong-answer">(Bạn chọn sai)</span> {% endif %}
+                {% if result.correct_answer == 'C' and not result.user_answer == 'C' %} <span class="correct-answer-option">(Đáp án đúng)</span> {% endif %}
+            </div>
+        </div>
+        <button class="back-button" onclick="window.location.href='{{ url_for('results') }}'">Quay lại kết quả</button>
+    </div>
+</body>
+</html>

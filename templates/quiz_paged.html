@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .quiz-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .question-info {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .options {
+            margin-left: 20px;
+        }
+        .option-item {
+            margin-bottom: 10px;
+        }
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+        .controls button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .controls button:hover {
+            background-color: #0056b3;
+        }
+        .question-navigation {
+            margin-top: 20px;
+        }
+        .question-navigation button {
+            padding: 8px 12px;
+            margin-right: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .question-navigation button.current {
+            background-color: #f0ad4e;
+            color: white;
+            border-color: #eea236;
+        }
+        #timer {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div id="timer">Thời gian còn lại: <span id="time">{{ time_remaining }}</span> giây</div>
+        <form method="POST" action="{{ url_for('quiz') }}" id="quiz-form">
+            <div class="question-info">
+                Câu hỏi {{ question_number }} / {{ total_questions }}
+            </div>
+            <div class="question">
+                {{ question.question }}
+            </div>
+            <div class="options">
+                <div class="option-item">
+                    <input type="radio" id="{{ question.id }}_a" name="{{ question.id }}" value="a" {% if user_answer == 'a' %}checked{% endif %}>
+                    <label for="{{ question.id }}_a">{{ question.option_a }}</label>
+                </div>
+                <div class="option-item">
+                    <input type="radio" id="{{ question.id }}_b" name="{{ question.id }}" value="b" {% if user_answer == 'b' %}checked{% endif %}>
+                    <label for="{{ question.id }}_b">{{ question.option_b }}</label>
+                </div>
+                <div class="option-item">
+                    <input type="radio" id="{{ question.id }}_c" name="{{ question.id }}" value="c" {% if user_answer == 'c' %}checked{% endif %}>
+                    <label for="{{ question.id }}_c">{{ question.option_c }}</label>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button type="submit" name="action" value="prev" {% if question_number == 1 %}disabled{% endif %}>Câu trước</button>
+                <button type="submit" name="action" value="next" {% if question_number == total_questions %}disabled{% endif %}>Câu sau</button>
+                <button type="submit" name="action" value="submit">Nộp bài</button>
+            </div>
+
+            <div class="question-navigation">
+                {% for i in range(total_questions) %}
+                    <button type="submit" name="action" value="goto_{{ i }}" {% if i + 1 == question_number %}class="current"{% endif %}>{{ i + 1 }}</button>
+                {% endfor %}
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const timerElement = document.getElementById('time');
+        const quizForm = document.getElementById('quiz-form');
+        let timeLeft = {{ time_remaining }};
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            timeLeft--;
+
+            if (timeLeft < 0) {
+                quizForm.submit();
+            } else {
+                setTimeout(updateTimer, 1000);
+            }
+        }
+
+        updateTimer();
+    </script>
+</body>
+</html>
